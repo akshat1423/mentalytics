@@ -69,7 +69,7 @@ const HealthAssistant = () => {
             <ChatApp 
                 query={query}  // Pass the updated query to ChatApp
                 setQuery={setQuery}  // Allow ChatApp to update the query as well
-                onSend={() => fetchSuggestions()} // Trigger suggestions when sending chat
+                onSend={fetchSuggestions} // Trigger suggestions when sending chat
             />
 
             {/* Suggested questions */}
@@ -102,7 +102,8 @@ const HealthAssistant = () => {
                                         color: '#fff', 
                                         border: 'none', 
                                         borderRadius: '4px', 
-                                        width: '40px', 
+                                        width: '40px', // Set a fixed width for the button
+                                        height: '40px', // Set fixed height for consistency
                                         display: 'flex', 
                                         justifyContent: 'center', 
                                         alignItems: 'center'
