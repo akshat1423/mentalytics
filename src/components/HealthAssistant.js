@@ -62,7 +62,7 @@ const HealthAssistant = () => {
         >
             {/* Title */}
             <h2 style={{ textAlign: 'center', marginBottom: '15px' }}>
-                Health Assistant <FaQuestionCircle />
+                Mental Health Assistant <FaQuestionCircle />
             </h2>
             
             {/* Pass down query state and fetchSuggestions as props to ChatApp */}
