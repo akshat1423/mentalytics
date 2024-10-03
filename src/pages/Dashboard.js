@@ -22,10 +22,11 @@ function Dashboard() {
       {/* <SmartwatchConnectedCard name={name} /> Pass name to the card */}
       {/* <HealthSummary name={name} /> Pass name to HealthSummary */}
       <HealthAssistant />
+      <DoctorRecommendations />
       {/* <AIAlerts />
       <DiseasePredictor />
       <Insights />
-      <DoctorRecommendations />
+      
       <HealthReports />
       <HealthReportDetails />
       <BlogSection /> */}
