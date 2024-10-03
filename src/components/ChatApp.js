@@ -65,7 +65,7 @@ const ChatApp = ({ query, setQuery }) => {
             formData.append('audio', blob, 'recording.webm');
 
             try {
-                const response = await fetch('https://wearlytics.pythonanywhere.com/api/upload-audio/', {
+                const response = await fetch('https://akshatgooglehackathon.pythonanywhere.com/api/upload-audio/', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
