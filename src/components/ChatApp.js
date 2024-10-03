@@ -36,7 +36,7 @@ const ChatApp = ({ query, setQuery }) => {
     const sendMessageToAPI = async (message) => {
         const token = localStorage.getItem('access_token');
         try {
-            const response = await fetch('http://localhost:8000/api/chat/', {
+            const response = await fetch('https://akshatgooglehackathon.pythonanywhere.com/api/chat/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
