@@ -8,7 +8,7 @@ const Header = ({ name }) => (
     <div className="header">
         <img src={logo} alt="Wearlytics Logo" className="logo" />
         <h2>
-            <FontAwesomeIcon icon={faUser} /> Welcome to Wearlytics, {name}
+            <FontAwesomeIcon icon={faUser} /> Welcome to Mentalytics, {name}
         </h2>
         {name !== "Guest" ? (
             <button className="header-button">

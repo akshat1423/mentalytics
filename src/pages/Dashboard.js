@@ -19,16 +19,16 @@ function Dashboard() {
     <div className="container">
       {/* Pass the name to the Header component */}
       <Header name={name} />
-      <SmartwatchConnectedCard name={name} /> {/* Pass name to the card */}
-      <HealthSummary name={name} /> {/* Pass name to HealthSummary */}
+      {/* <SmartwatchConnectedCard name={name} /> Pass name to the card */}
+      {/* <HealthSummary name={name} /> Pass name to HealthSummary */}
       <HealthAssistant />
-      <AIAlerts />
+      {/* <AIAlerts />
       <DiseasePredictor />
       <Insights />
       <DoctorRecommendations />
       <HealthReports />
       <HealthReportDetails />
-      <BlogSection />
+      <BlogSection /> */}
     </div>
   );
 }

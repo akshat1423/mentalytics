@@ -14,7 +14,7 @@ const HealthAssistant = () => {
     const fetchSuggestions = async () => {
         setLoading(true); // Start loading
         try {
-            const response = await fetch('https://wearlytics.pythonanywhere.com/api/suggestions/', {
+            const response = await fetch('localhost:8000/api/suggestions/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const HealthAssistant = () => {
             </div>
 
             {/* File upload and attach buttons */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+            {/* <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
                 <button 
                     style={{ 
                         flex: 1, 
@@ -150,10 +150,10 @@ const HealthAssistant = () => {
                 >
                     <FaPaperclip style={{ marginRight: '8px' }} /> Attach
                 </button>
-            </div>
+            </div> */}
 
             {/* Connect with live doctor button */}
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <button 
                     style={{ 
                         padding: '10px', 
@@ -168,7 +168,7 @@ const HealthAssistant = () => {
                 >
                     <FaUserMd style={{ marginRight: '8px' }} /> Connect with Live Doctor
                 </button>
-            </div>
+            </div> */}
         </div>
     );
 };
