@@ -14,7 +14,7 @@ const HealthAssistant = () => {
     const fetchSuggestions = async () => {
         setLoading(true); // Start loading
         try {
-            const response = await fetch('localhost:8000/api/suggestions/', {
+            const response = await fetch('https://akshatgooglehackathon.pythonanywhere.com/api/suggestions/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
