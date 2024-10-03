@@ -141,7 +141,7 @@ const ChatApp = ({ query, setQuery }) => {
 
     return (
         <div className="chat-container">
-            <h2 className="chat-recommendation"><FaRobot style={{ marginRight: '8px' }} /> AI Assistant : Menta</h2>
+            <h2 className="chat-recommendation"><FaRobot style={{ marginRight: '8px' }} /> AI Assistant - Menta</h2>
             <div className="chat-window">
                 {messages.map((msg, index) => (
                     <div key={index} className={`message-container ${msg.user ? 'user' : 'assistant'}`}>
