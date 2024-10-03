@@ -128,7 +128,7 @@ const ChatApp = ({ query, setQuery }) => {
     // Check if user is logged in
     const isLoggedIn = !!token;
 
-    // Add a login prompt message if the user is not logged in and hasn't been prompted yet
+    // Add a login prompt message if the user is not logged in and hasn't been prompted yetm
     useEffect(() => {
         if (!isLoggedIn && !hasPromptedLogin) {
             setMessages((prevMessages) => [
