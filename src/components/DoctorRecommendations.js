@@ -9,26 +9,27 @@ import { faCalendarAlt, faComments, faArrowRight } from '@fortawesome/free-solid
 const doctorsList = [
   {
     name: 'Dr. Aamir Khan',
-    specialization: 'Endocrinologist',
+    specialization: 'Therapist',
     rating: 4.5,
-    review: 'Great doctor for diabetes treatment, got cured in 2 months',
+    review: 'Helped me navigate my anxiety and depression, and I feel much better now!',
     image: placeholderImage,
   },
   {
     name: 'Dr. Sarah Lee',
-    specialization: 'Cardiologist',
+    specialization: 'Clinical Psychologist',
     rating: 4.8,
-    review: 'Helped me manage my high blood pressure, highly recommend!',
+    review: 'Provided great coping strategies for stress management. Highly recommend!',
     image: placeholderImage,
   },
   {
     name: 'Dr. James Smith',
-    specialization: 'Dermatologist',
+    specialization: 'Psychiatrist',
     rating: 4.2,
-    review: 'Excellent treatment for skin issues, saw improvements quickly.',
+    review: 'Excellent support through tough times, really improved my mental well-being.',
     image: placeholderImage,
   },
 ];
+
 
 const DoctorRecommendations = () => {
   const [currentDoctorIndex, setCurrentDoctorIndex] = useState(0);
