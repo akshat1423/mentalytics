@@ -1,0 +1,6 @@
+Django
+djangorestframework
+openai
+google-generativeai
+SpeechRecognition 
+pydub

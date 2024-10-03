@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+         /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        /* Table styling */
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            padding: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        /* Different row colors based on response type */
+        .state1 {
+            background-color: #1cc5a78a;
+        }
+        .state2 {
+            background-color: #d9f9d9;
+        }
+        .state3 {
+            background-color: #f9d9d9;
+        }
+        .state4 {
+            background-color: #d9d9f9;
+        }
+        /* Graph styling */
+        #myChart {
+            max-width: 90%;
+            margin: 20px auto;
+        }
+        .chart-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#pieChartContainer, #wordCloudContainer {
+  flex: 1;
+  margin: 20px;
+}
+
+        #responseTypeChart {
+            max-width: 400px;
+            max-height: 400px;
+            margin: 20px auto;
+        }
+    </style>
+    <script>
+        // Filter function
+        $(document).ready(function(){
+            $(".filter").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                var column = $(this).data('column');
+                $("tbody tr").filter(function() {
+                    $(this).toggle($(this).find(`td:eq(${column})`).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
+
+</head>
+<body>
+    <style>
+        h1 {
+            background-color: #28A745; /* Updated to green */
+            color: white;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+   <style>
+        h1 {
+            background-color: #28A745; /* Updated to green */
+            color: white;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+        <style>
+        .header {
+            background-color: #28A745;
+            color: white;
+            padding: 20px 10px;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            flex-grow: 1;
+        }
+        .navbar {
+            display: flex;
+                           flex-wrap: wrap;
+            justify-content: center;
+            gap: 11px;
+        }
+        .navbar a {
+            background-color: #258b3c73;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 1s;
+        }
+        .navbar a:hover {
+            background-color: #218838;
+        }
+
+
+        .navbar a span {
+    display: none;
+    margin-left: 8px;
+    white-space: nowrap; /* Ensure the text does not wrap */
+}
+
+.navbar a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Adjust based on the size you want for the icons */
+    height: 40px;
+    overflow: hidden; /* Hide the text initially */
+}
+
+.navbar a:hover span {
+    display: inline; /* Show text on hover */
+}
+
+.navbar a:hover {
+    width: auto; /* Allow the link to expand to fit the text */
+    padding: 10px; /* Add some padding around the text */
+}
+
+
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <div class="header">
+        <h1>🌱  Veda Dashboard 🤖 🌿</h1>
+<div class="navbar">
+        <a href="https://akshatgooglehackathon.pythonanywhere.com/" title="Home"><i class="fas fa-home"></i><span>Home</span></a>
+    <!--<a href="https://evolvingplanet.pythonanywhere.com/dashboardhealthbot" title="Dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>-->
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/broadcast" title="Broadcast"><i class="fas fa-broadcast-tower"></i><span>Broadcast</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/upload" title="Upload Docs"><i class="fas fa-upload"></i><span>Upload Docs</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/contacts" title="Contacts"><i class="fas fa-address-book"></i><span>Contacts</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/chatindex" title="Chats"><i class="fas fa-comments"></i><span>Chats</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/upload-contacts" title="Upload Contacts"><i class="fas fa-file-upload"></i><span>Upload Contacts</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/queries_over_time" title="Analytics"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/admin" title="Admin"><i class="fas fa-user-cog"></i><span>Admin</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/settings" title="Settings"><i class="fas fa-cog"></i><span>Settings</span></a>
+
+</div>
+</div>
+
+
+
+    <!-- <div id="lineChartContainer">-->
+    <!--    <canvas id="myChart"></canvas>-->
+    <!--</div>-->
+    <div class="chart-container">
+  <div id="pieChartContainer">
+    <canvas id="responseTypeChart"></canvas>
+  </div>
+  <div id="wordCloudContainer">
+    <svg id="wordCloud" width="600" height="300"></svg>
+  </div>
+</div>
+
+
+    <table>
+
+        <thead>
+            <tr>
+                <th><input type="text" class="filter" data-column="0" placeholder="Id" style="width: 20px;"></th>
+                <th><input type="text" class="filter" data-column="1" placeholder="Filter User Name"></th>
+
+                <th><input type="text" class="filter" data-column="2" placeholder="Filter User Message"></th>
+                <th><input type="text" class="filter" data-column="3" placeholder="Filter Response"></th>
+                {% comment %} <th><input type="text" class="filter" data-column="3" placeholder="Filter Product Response"></th> {% endcomment %}
+                <th><input type="text" class="filter" data-column="4" placeholder="Filter Gist"></th>
+                {% comment %} <th style="width: 80px;"><input type="text" class="filter" data-column="5" placeholder="Filter Response Type" style="width: 80px;"></th> {% endcomment %}
+                <th><input type="text" class="filter" data-column="5" placeholder="Filter Created At" style="width: 80px;"></th>
+                <th><input type="text" class="filter" data-column="6" placeholder="State" style="width: 20px;"></th>
+
+            </tr>
+            <tr>
+                <th>Message Id</th>
+                <th>Name</th>
+                <th>User Message</th>
+                <th>Response</th>
+                {% comment %} <th>Product Response</th> {% endcomment %}
+                <th>Gist</th>
+                {% comment %} <th>Response Type</th> <!-- New Column --> {% endcomment %}
+                <th>Created At</th>
+                <th>Current State</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% comment %} console.log({{all_messages}}) {% endcomment %}
+            {% for message in all_messages %}
+
+            <tr>
+                <td style="width: 20px;">{{ message.message_internal_id  }}</td>
+                <td style="width: 20px;">{{ message.profile_name  }}</td>
+                <td class="user-message">{{ message.user_message }}</td>
+                <td>{{ message.doctor_response }}</td>
+                {% comment %} <td>{{ message.product_response }}</td> {% endcomment %}
+                <td>{{ message.gist }}</td>
+                {% comment %} <td>{{ message.response_message_segregation }}</td> <!-- New Column --> {% endcomment %}
+                <td>{{ message.created_at }}</td>
+                <td style="width: 20px;">{{ message.currentstate  }}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<script>
+    const commonWords = ["my", "do", "how", "what", "a", "the", "is", "in", "and", "of", "me","to","having", "hey", "am", "bot", "this", "for", "not","hey", "hello","hi","I", "can","thank","very","much","you","i" ];
+    let wordFreq = {};
+
+    // Assuming you have a class 'user-message' in your table's td
+    $(".user-message").each(function() {
+        const message = $(this).text();
+        const words = message.split(/\s+/);
+        words.forEach(word => {
+            word = word.toLowerCase();
+            if (!commonWords.includes(word)) {
+                wordFreq[word] = (wordFreq[word] || 0) + 1;
+            }
+        });
+    });
+    console.log(wordFreq);
+
+    // Convert the frequency map to an array of objects
+    const words = Object.keys(wordFreq).map(function(word) {
+        return {text: word, size: wordFreq[word] * 10};
+    });
+    console.log(words)
+// Generate the word cloud
+const svg = d3.select("#wordCloud");
+const width = +svg.attr("width");
+const height = +svg.attr("height");
+
+const layout = d3.layout.cloud()
+  .size([width, height])
+  .words(words)
+  .padding(5)
+  .rotate(() => ~~(Math.random() * 2) * 90)
+  .fontSize(d => d.size)
+  .on("end", draw);
+
+layout.start();
+
+function draw(words) {
+  const fill = d3.scaleOrdinal(d3.schemeCategory10);
+  svg.append("g")
+    .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+    .selectAll("text")
+    .data(words)
+    .enter().append("text")
+    .style("font-size", d => d.size + "px")
+    .style("fill", (d, i) => fill(i))
+    .attr("text-anchor", "middle")
+    .attr("transform", d => "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")")
+    .text(d => d.text);
+}
+
+
+
+</script>
+  <script>
+    $(document).ready(function() {
+    // Filter function
+    $(".filter").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        var column = $(this).data('column');
+        $("tbody tr").filter(function() {
+            $(this).toggle($(this).find(`td:eq(${column})`).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+
+    // Count types of responses
+    let welcome_coint = 0;
+    let query_count = 0;
+    let yoga_count = 0;
+    let prod_count = 0;
+    let ayur_count = 0;
+    let new_count = 0;
+    let feedback_count = 0;
+
+    $("tbody tr").each(function() {
+        const responseType = $(this).find("td:eq(6)").text().toLowerCase();
+        if (responseType === "1") welcome_coint++;
+        if (responseType === "2") query_count++;
+        if (responseType === "3") ayur_count++;
+        if (responseType === "4") yoga_count++;
+        if (responseType === "5") prod_count++;
+        if (responseType === "-999") new_count++;
+        if (responseType === "10") feedback_count++;
+        $(this).addClass("state"+responseType);
+    });
+
+    // Create Pie Chart
+    const pieCtx = document.getElementById('responseTypeChart').getContext('2d');
+    const pieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['1', '2', '3', '4','5','-999','10'],
+            datasets: [{
+                data: [welcome_coint, query_count, ayur_count,yoga_count,prod_count, new_count, feedback_count],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50']
+            }]
+        }
+    });
+
+    // Sorting logic
+    var rows = $('tbody tr').get();
+    rows.sort(function(a, b) {
+        var A_id = parseInt($(a).children('td').eq(0).text(), 10); // Assuming the message ID is an integer
+        var B_id = parseInt($(b).children('td').eq(0).text(), 10); // Assuming the message ID is an integer
+
+        var A_val = $(a).children('td').eq(6).text().toUpperCase();
+        var B_val = $(b).children('td').eq(6).text().toUpperCase();
+
+        // First compare by message ID
+        if (A_id > B_id) {
+            return -1;
+        }
+        if (A_id < B_id) {
+            return 1;
+        }
+
+        // If message IDs are equal, then compare by column 6
+        if (A_val > B_val) {
+            return 1;
+        }
+        if (A_val < B_val) {
+            return -1;
+        }
+
+        return 0;
+    });
+
+    $.each(rows, function(index, row) {
+        $('tbody').append(row);
+    });
+});
+
+
+    </script>
+</body>
+</html>

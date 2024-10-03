@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Form</title>
+
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+
+        /* Form styling */
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .toggle-buttons {
+            margin-bottom: 20px;
+        }
+        .toggle-buttons label {
+            margin-right: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .width96{
+            width: 96% !important;
+        }
+        .styled-select{
+            width: 22%;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="url"],
+        .form-group textarea,
+        .styled-select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="url"],
+        .form-group textarea {
+            background: none;
+            background-image: none;
+            padding-right: 10px;
+        }
+        .styled-select {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="%23333" d="M8 11.25L3.5 6.5l1-1L8 9.25l3.5-4.75 1 1z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .styled-select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        /* Submit button styling */
+        .submit {
+            padding: 10px 20px;
+            background-color: #28a745; /* Green background color */
+            color: white; /* White text color */
+            border: none;
+            border-radius: 5px; /* Rounded borders */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: calc(22% + 30px); /* Adjust width according to input boxes */
+            height: 40px; /* Adjust height */
+            margin-bottom: 10px; /* Add margin to separate from input boxes */
+        }
+
+        .submit:hover {
+            background-color: #218838; /* Darker shade of green on hover */
+        }
+
+        .submit:active {
+            transform: translateY(1px); /* Add a subtle downward shift when clicked */
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <style>
+        h1 {
+            background-color: #28A745; /* Updated to green */
+            color: white;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+        <style>
+        .header {
+            background-color: #28A745;
+            color: white;
+            padding: 20px 10px;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            flex-grow: 1;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+                           flex-wrap: wrap;
+            gap: 11px;
+        }
+        .navbar a {
+            background-color: #258b3c73;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 1s;
+        }
+        .navbar a:hover {
+            background-color: #218838;
+        }
+
+
+        .navbar a span {
+    display: none;
+    margin-left: 8px;
+    white-space: nowrap; /* Ensure the text does not wrap */
+}
+
+.navbar a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Adjust based on the size you want for the icons */
+    height: 40px;
+    overflow: hidden; /* Hide the text initially */
+}
+
+.navbar a:hover span {
+    display: inline; /* Show text on hover */
+}
+
+.navbar a:hover {
+    width: auto; /* Allow the link to expand to fit the text */
+    padding: 10px; /* Add some padding around the text */
+}
+
+
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <div class="header">
+        <h1>🌱 Mentalytics Broadcasting 🤖 🌿</h1>
+<div class="navbar">
+        <a href="https://akshatgooglehackathon.pythonanywhere.com/" title="Home"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/dashboardhealthbot" title="Dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+    <!--<a href="https://akshatgooglehackathon.pythonanywhere.com/broadcast" title="Broadcast"><i class="fas fa-broadcast-tower"></i><span>Broadcast</span></a>-->
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/upload" title="Upload Docs"><i class="fas fa-upload"></i><span>Upload Docs</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/contacts" title="Contacts"><i class="fas fa-address-book"></i><span>Contacts</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/chatindex" title="Chats"><i class="fas fa-comments"></i><span>Chats</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/upload-contacts" title="Upload Contacts"><i class="fas fa-file-upload"></i><span>Upload Contacts</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/queries_over_time" title="Analytics"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/admin" title="Admin"><i class="fas fa-user-cog"></i><span>Admin</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/settings" title="Settings"><i class="fas fa-cog"></i><span>Settings</span></a>
+
+</div>
+</div>
+    <!--<h1>Broadcasting<button onclick="window.location.href='/'">Home</button></h1>-->
+    <div class="container">
+        <h2>Message Broadcast</h2>
+        <div class="toggle-buttons">
+            <label>
+                <input type="radio" name="messageType" value="text" checked> Send Text Message
+            </label>
+            <label>
+                <input type="radio" name="messageType" value="media"> Send Media Message
+            </label>
+            <label>
+                <input type="radio" name="messageType" value="new_number"> Send Message to New Number
+            </label>
+        </div>
+        <div id="textMessageForm">
+            <form id="messageFormText" method="post" action="{% url 'submit_text_message' %}">
+                {% csrf_token %}
+                <div class="form-group" id="phoneGroupMedia">
+                    <label for="phoneNumberMedia">Phone Number: (Add country code in the start like: 918888899999)</label>
+                    <select id="phoneNumberSelect" name="phoneNumberSelect" class="styled-select">
+                        <!-- Options dynamically populated from the 'threads' queryset -->
+                        {% for contact in contacts %}
+                            <option value="{{ contact.phone_number }}">{{ contact.phone_number }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" id="phoneNumberManual" name="phoneNumberManual" placeholder="Or enter manually">
+                </div>
+
+                <div class="form-group" id="messageGroup">
+                    <label for="message">Message:</label>
+                    <textarea id="message" class="width96" name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="submit">Send</button>
+            </form>
+        </div>
+        <div id="mediaMessageForm" style="display: none;">
+            <form id="messageFormMedia" method="post" action="{% url 'submit_media_message' %}">
+                {% csrf_token %}
+                <div class="form-group" id="phoneGroupMedia">
+                    <label for="phoneNumberMedia">Phone Number: (Add country code in the start like: 918888899999)</label>
+                    <select id="phoneNumberSelectMedia" name="phoneNumberSelectMedia" class="styled-select">
+                        <!-- Options dynamically populated from the 'threads' queryset -->
+                        {% for contact in contacts %}
+                            <option value="{{ contact.phone_number }}">{{ contact.phone_number }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" id="phoneNumberMedia" name="phoneNumberMedia" placeholder="Or enter manually">
+                </div>
+                <div class="form-group" id="attachmentGroup">
+                    <label for="attachment">Attachment Link:</label>
+                    <input class="width96" type="text" id="attachment" name="attachment">
+                </div>
+                <div class="form-group" id="mediaTypeGroup">
+                    <label for="mediaType" >Media Type:</label>
+                    <select id="mediaType" class="styled-select" name="mediaType">
+                        <option value="audio">audio</option>
+                        <option value="image">image</option>
+                        <option value="video">video</option>
+                        <option value="document">document</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit">Send</button>
+            </form>
+        </div>
+        <div id="newNumberMessageForm" style="display: none;">
+            <form id="messageFormNewNumber" method="post" action="{% url 'submit_new_number_message' %}">
+                {% csrf_token %}
+                <div class="form-group" id="phoneGroupNewNumber">
+                    <label for="phoneNumberNewNumber">New Phone Number: (Add country code in the start like: 918888899999)</label>
+                    <input type="text" id="phoneNumberNewNumber" name="phoneNumberNewNumber" placeholder="Enter new phone number" required>
+                </div>
+                <div class="form-group" id="templateMessageGroup">
+                    <label for="templateMessageId" >Template Message ID:</label>
+                    <input type="text" id="templateMessageId" name="templateMessageId" placeholder="Enter template message ID" value="new_number_message" required>
+                </div>
+                <button type="submit" class="submit">Send</button>
+            </form>
+        </div>
+        {% if success_message %}
+            <div class="success-message">
+                <p>{{ success_message }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const textMessageForm = document.getElementById('textMessageForm');
+        const mediaMessageForm = document.getElementById('mediaMessageForm');
+        const newNumberMessageForm = document.getElementById('newNumberMessageForm');
+
+        document.querySelectorAll('input[name="messageType"]').forEach((elem) => {
+            elem.addEventListener('change', (event) => {
+                if (event.target.value === 'text') {
+                    textMessageForm.style.display = 'block';
+                    mediaMessageForm.style.display = 'none';
+                    newNumberMessageForm.style.display = 'none';
+                } else if (event.target.value === 'media') {
+                    textMessageForm.style.display = 'none';
+                    mediaMessageForm.style.display = 'block';
+                    newNumberMessageForm.style.display = 'none';
+                } else if (event.target.value === 'new_number') {
+                    textMessageForm.style.display = 'none';
+                    mediaMessageForm.style.display = 'none';
+                    newNumberMessageForm.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
