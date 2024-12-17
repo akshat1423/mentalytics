@@ -29,6 +29,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.files.storage import default_storage
+from django.core.files import File
 
 from .serializers import ChatSerializer
 
@@ -46,7 +47,8 @@ import csv
 import time
 from datetime import datetime, timedelta
 from urllib.parse import quote
-
+from pathlib import Path
+PHONE_NUM_ID=config('PHONE_NUM_ID')
 WHATSAPP_TOKEN=config('WHATSAPP_TOKEN')
 messenger = WhatsApp(token=config('WHATSAPP_TOKEN'),phone_number_id=config('PHONE_NUM_ID'))
 GOOGLE_API_KEY=config('GOOGLE_API_KEY')
@@ -56,94 +58,19 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 # @csrf_exempt
 # def bot(request):
-#     # if (request.GET.get('hub.mode') == 'subscribe' and
-#     #         request.GET.get('hub.verify_token') == "HELLO"):
-#     #         return HttpResponse(request.GET.get('hub.challenge'))
+#     if (request.GET.get('hub.mode') == 'subscribe' and
+#             request.GET.get('hub.verify_token') == "HELLO"):
+#             return HttpResponse(request.GET.get('hub.challenge'))
 
-#     # else:
-#     #         return HttpResponse('Error, invalid token', status=403)
+#     else:
+#             return HttpResponse('Error, invalid token', status=403)
 #     response = messenger.send_message(
-#         message=str("Hello akshat this bot is idiot and mad"),
+#         message=str("Testing"),
 #         recipient_id="918128612391"
 #     )
 #     return HttpResponse(status=200)
 
 
-
-
-# @csrf_exempt
-# def bot(request):
-#     try:
-#         bodyy=json.loads(request.body.decode('utf-8'))
-#         if 'statuses' in bodyy['entry'][0]['changes'][0]['value']:
-#             # If statuses exist
-#             statuses = bodyy['entry'][0]['changes'][0]['value']['statuses']
-#             # Process statuses
-#             print("Statuses exist:")
-#         else:
-#             # If statuses do not exist
-#             print("No statuses found.")
-
-#             if bodyy['entry'][0]['changes'][0]['value']['messages'][0]['type'] == 'audio':
-#                 print("audio")
-#                 message_id = bodyy['entry'][0]['changes'][0]['value']['messages'][0]['id']
-#                 messenger.mark_as_read(message_id)
-#                 timestamp = int(bodyy['entry'][0]['changes'][0]['value']['messages'][0]['timestamp'])
-#                 message_time = datetime.utcfromtimestamp(timestamp)
-#                 current_time = datetime.utcnow()
-#                 time_difference = current_time - message_time
-#                 if time_difference > timedelta(hours=1):
-#                     print(bodyy)
-#                     print("ignoring message")
-#                     print("Message Time:", message_time)
-#                     print("Time Difference:", time_difference)
-#                     return HttpResponse(status=200)
-#                 process_audio_from_link(bodyy['entry'][0]['changes'][0]['value']['messages'][0]['audio']['id'],bodyy)
-#             else:
-#                 print(bodyy)
-#                 message_id = bodyy['entry'][0]['changes'][0]['value']['messages'][0]['id']
-#                 messenger.mark_as_read(message_id)
-#                 timestamp = int(bodyy['entry'][0]['changes'][0]['value']['messages'][0]['timestamp'])
-#                 message_time = datetime.utcfromtimestamp(timestamp)
-#                 current_time = datetime.utcnow()
-
-#                 time_difference = current_time - message_time
-#                 # print("Message Time:", message_time)
-#                 # print("Time Difference:", time_difference)
-#                 if time_difference > timedelta(hours=1):
-#                     print(bodyy)
-#                     print("ignoring message")
-#                     print("Message Time:", message_time)
-#                     print("Time Difference:", time_difference)
-#                     return HttpResponse(status=200)
-#                 message_data = bodyy.get('entry', [{}])[0].get('changes', [{}])[0].get('value', {}).get('messages', [{}])[0]
-#                 text_data = message_data.get('text')
-#                 message_from_user = text_data.get('body', "None")
-#                 if message_from_user:
-#                     try:
-#                         model = genai.GenerativeModel(
-#                                 model_name="gemini-1.5-flash",
-#                                 system_instruction="You are a mental health expert . Give adises in points format, dont give bullet points"
-#                             )
-#                         response = model.generate_content([message_from_user])
-#                         response_mess = response.text.strip()
-#                         print("Response from AI:", response_mess)  # Debug line
-#                     except Exception as e:
-#                         print("Error calling answer_function:", e)  # Debug line
-#                         response_mess = "Sorry, I couldn't process your request."
-#                     print(response_mess)
-#                     if response_mess:
-#                         response = messenger.send_message(
-#                             message=str(response_mess),
-#                             recipient_id="918128612391"
-#                         )
-#                     else:
-#                         print("No response generated.")
-#         return HttpResponse(status=200)
-
-#     except json.JSONDecodeError:
-#         print("things aint working out")
-#         return HttpResponse(status=400)
 
 def get_completion_from_messages(message):
     model = genai.GenerativeModel(
@@ -197,8 +124,8 @@ def messagebutton(header,body,button1,button2,button3,button4,phone_no_from):
             )
 
 def ask_to_feedback_message(phone_no_from):
-                print("hi")
-                url = "https://graph.facebook.com/v18.0/138583586012407/messages"
+                # print("hi")
+                url = f"https://graph.facebook.com/v18.0/{PHONE_NUM_ID}/messages"
                 headers = {
         'Authorization': f'Bearer {WHATSAPP_TOKEN}'
     }
@@ -245,9 +172,9 @@ def ask_to_feedback_message(phone_no_from):
                 print(response.text)
 
 def send_feedback_message(Question,phone_no_from):
-                url = "https://graph.facebook.com/v18.0/138583586012407/messages"
+                url = f"https://graph.facebook.com/v18.0/{PHONE_NUM_ID}/messages"
                 headers = {
-        'Authorization': f'Bearer {WHATSAPP_TOKEN} '
+        'Authorization': f'Bearer {WHATSAPP_TOKEN}'
     }
 
                 data = {
@@ -308,7 +235,7 @@ def send_feedback_message(Question,phone_no_from):
                 print(response.text)
 
 def send_interactive_message(row1_description, row2_description, row3_description, row4_description,phone_no_from):
-                url = "https://graph.facebook.com/v18.0/138583586012407/messages"
+                url = f"https://graph.facebook.com/v18.0/{PHONE_NUM_ID}/messages"
                 headers = {
         'Authorization': f'Bearer {WHATSAPP_TOKEN}'
     }
@@ -368,6 +295,47 @@ def send_interactive_message(row1_description, row2_description, row3_descriptio
 def split_string(text, chunk_size=1300):
         return [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
 
+def messagebutton_together(header,body,row1_description, row2_description, row3_description, row4_description,phone_no_from):
+                response = messenger.send_button(
+                recipient_id=phone_no_from,
+                button={
+                    "header": header,
+                    "body": body,
+                    "footer": "Also find some suggestive question below: 😉",
+                    "action": {
+                        "button": "Suggested Questions",
+                        "sections": [
+                            {
+                                # "title": "iBank",
+                                "rows": [
+
+                                     {
+                                            "id": "1",
+                                            "title": "1",
+                                            "description": row1_description
+                                        },
+                                        {
+                                            "id": "2",
+                                            "title": "2",
+                                            "description": row2_description
+                                        },
+                                        {
+                                            "id": "3",
+                                            "title": "3",
+                                            "description": row3_description
+                                        },
+                                        {
+                                            "id": "4",
+                                            "title": "4",
+                                            "description": row4_description
+                                        },
+
+                                ],
+                            }
+                        ],
+                    },
+                },
+            )
 
 @csrf_exempt
 def bot(request):
@@ -396,7 +364,8 @@ def bot(request):
                     print("Message Time:", message_time)
                     print("Time Difference:", time_difference)
                     return HttpResponse(status=200)
-                process_audio_from_link(bodyy['entry'][0]['changes'][0]['value']['messages'][0]['audio']['id'],bodyy)
+                phone_no_from =  bodyy['entry'][0]['changes'][0]['value']['messages'][0]['from']
+                process_audio_from_link(bodyy['entry'][0]['changes'][0]['value']['messages'][0]['audio']['id'],bodyy,phone_no_from)
             else:
                 print(bodyy)
                 message_id = bodyy['entry'][0]['changes'][0]['value']['messages'][0]['id']
@@ -439,11 +408,13 @@ def bot(request):
 
 
                 def intro(profile_name):
-                    messangerbot(f"🌼 Welcome to Mentalytics, {profile_name}! Your personal Wellness and Mental Health Bot is here for you. 🤖\n💚 We specialize in holistic approaches to mental well-being, offering support, resources, and guidance for your journey. 🌿\nWhat’s on your mind today?",phone_no_from)
+                    # messangerbot(f"🌼 Welcome to Mentalytics, {profile_name}! Your personal Wellness and Mental Health Bot Menta is here for you. 🤖\n💚 We specialize in holistic approaches to mental well-being, offering support, resources, and guidance for your journey. 🌿\nWhat’s on your mind today?",phone_no_from)
+                    messangerbot(f"🌼 Welcome to Mentalytics, {profile_name}! Your personal Wellness and Mental Health Bot Menta is here for you. 🤖\n💚 We specialize in holistic approaches to mental well-being, offering support, resources, and guidance for your journey. 🌿\n",phone_no_from)
 
                 def processing():
-                    messangerbot("🌱 We're here to listen and support you. 💬 Please share what you're feeling or thinking, and we'll work through it together.",phone_no_from)
-                def ayurved(message):
+                    messangerbot("🌱 We're here to listen and support you. 💬 thinking ...  we'll work through it together.",phone_no_from)
+
+                def thinker(message):
                     response_doctor=get_completion_from_messages(message)
                     response_doctor_splitted = split_string(response_doctor, chunk_size)
                     response=response_doctor_splitted[0]
@@ -487,6 +458,7 @@ def bot(request):
                                 "👇 So what are you waiting for? Dive in and let's make some magic happen! 🎩\n"
                                 "👉 What's troubling you today?📝")
                         messangerbot(reply,phone_no_from)
+                        ask_to_feedback_message(phone_no_from)
                         currentstate=-999
                         update_database_and_sheet(message_from_user, "FIRST MESSAGE",response_message_segregation,
                                                 phone_no_from, profile_name, message_count, currentstate)
@@ -495,6 +467,7 @@ def bot(request):
                     else:
                         currentstate=-999
                     print(interactive_message_description)
+
                     if interactive_message_description=="Yes":
                         currentstate=1000
                         update_database_and_sheet(message_from_user, "None", "feedback_menu",
@@ -508,6 +481,12 @@ def bot(request):
                         currentstate=1001
                         update_database_and_sheet(message_from_user, "None", "feedback_menu",
                                                 phone_no_from, profile_name,  message_count, currentstate)
+                    elif message_from_user.lower()=="exit" or currentstate==10:
+                            messangerbot("Thanks for using our Bot!", phone_no_from    )
+                            ask_to_feedback_message(phone_no_from)
+                            currentstate=-999
+                            update_database_and_sheet(message_from_user, "Thank you Message", response_message_segregation,
+                                                    phone_no_from, profile_name, message_count,  currentstate)
                     elif currentstate==1001:
                         updatefeedback("Did the bot answer your query?",interactive_message_description,phone_no_from)
                         send_feedback_message("Were you comfortable with the answers provided?",phone_no_from)
@@ -532,19 +511,29 @@ def bot(request):
                         currentstate=-999
                         update_database_and_sheet(message_from_user, "None", "feedback_menu",
                                                 phone_no_from, profile_name, message_count, currentstate)
-                    elif response_message_segregation.lower() == "feedback":
-                        messangerbot("Thanks for using our Bot!",phone_no_from)
-                        ask_to_feedback_message()
+                    # elif response_message_segregation.lower() == "feedback":
+                    #     messangerbot("Thanks for using our Bot!",phone_no_from)
+                    #     ask_to_feedback_message(phone_no_from)
 
-                        currentstate=-999
-                        update_database_and_sheet(message_from_user, "None", response_message_segregation,
-                                                phone_no_from, profile_name, message_count,currentstate)
+                    #     currentstate=-999
+                    #     update_database_and_sheet(message_from_user, "None", response_message_segregation,
+                    #                             phone_no_from, profile_name, message_count,currentstate)
 
                     elif (currentstate==-999 or currentstate==0):
                         intro(profile_name)
-                        currentstate=2
+                        send_feedback_message("How is your mood now ? ",phone_no_from)
+                        currentstate=1099
                         update_database_and_sheet(message_from_user, "None", response_message_segregation,
                                                 phone_no_from, profile_name, message_count, currentstate)
+
+
+                    elif currentstate==1099:
+                        updatefeedback("How is your mood now ?",interactive_message_description,phone_no_from)
+                        messangerbot("Cool! So Lets chat now, tell me whats going on your mind ?",phone_no_from)
+                        currentstate=2
+                        update_database_and_sheet(message_from_user, "None", "feedback_menu",
+                                                phone_no_from, profile_name, message_count, currentstate)
+
                     elif currentstate==2:
                         message=UserQuery.objects.filter(phone_no_from=phone_no_from,currentstate=2).order_by('-message_internal_id').first().user_message
                         responsedoc="none"
@@ -554,74 +543,43 @@ def bot(request):
 
                             processing()
                             if message_from_user=="None":
-                                ayurvedmessagebot=ayurved(interactive_message_description)
+                                message_bot=thinker(interactive_message_description)
                             else:
-                                ayurvedmessagebot=ayurved(message_from_user)
-                            messangerbot(ayurvedmessagebot,phone_no_from)
-                            update_database_and_sheet(message_from_user,ayurvedmessagebot,  response_message_segregation,
+                                message_bot=thinker(message_from_user)
+                            # messangerbot(message_bot,phone_no_from)
+                            update_database_and_sheet(message_from_user,message_bot,  response_message_segregation,
                                                 phone_no_from, profile_name, message_count, currentstate)
-                            # format="""{
-                            #     "questions": [
-                            #         "How can blinking frequently help with eye strain?",
-                            #         "What is the 20-20-20 rule for reducing eye strain?",
-                            #         "Why is proper lighting essential to reduce eye strain?",
-                            #         "When should you consult an eye care professional for eye strain?"
-                            # ]
-                            # }  """
-                            # prompt1 = f'''
-                            # generate similar 4 small questions(limit is of 20 char for each ques) based on these queries in list format give in a json type format {format}, give only the json no text above or below it
-                            # {message} and {message_from_user} and response {responsedoc}
-                            # '''
+                            format="""{
+                                "questions": [
+                                    "How can I get out of this stress?",
+                                    "What is the best way of dealing stress?",
+                                    "Why is being positive important?",
+                                    "Should I study harder?"
+                            ]
+                            }  """
+                            prompt1 = f'''
+                            generate similar 4 small questions(limit is of 20 char for each ques) based on these queries in list format give in a json type format {format}, give only the json no text above or below it
+                            {message} and {message_from_user} and response {responsedoc} ... dont give the same question! give based on the use ques and chat
+                            '''
+                            model = genai.GenerativeModel("gemini-1.5-pro-latest")
+                            openai_response = model.generate_content(
+                                prompt1,
+                                generation_config=genai.GenerationConfig(
+                                    response_mime_type="application/json"
+                                ),
+                            )
+                            openai_response=openai_response.text.strip()
 
-                            # openai_response = client.chat.completions.create(
-                            #         model="gpt-3.5-turbo-1106",
-                            #         response_format={"type":"json_object"},
-                            #     messages = [{'role': 'user', 'content': prompt1}]
-                            # )
+                            response_query_choser2=(openai_response)
+                            questions = json.loads(response_query_choser2[response_query_choser2.find("{"):response_query_choser2.rfind("}") + 1])["questions"]
+                            question1, question2, question3, question4 = questions
+                            messagebutton_together("Menta",message_bot, question1 , question2 , question3 , question4,phone_no_from)
+                            update_database_and_sheet(message_from_user+interactive_message_description, message_bot , response_message_segregation,
+                                                    phone_no_from, profile_name, message_count,  currentstate)
 
-                            # response_query_choser2=(openai_response.choices[0].message.content)
-                            # print(response_query_choser2)
-                            # messangerbot(response_query_choser2)
-                            # questions = json.loads(response_query_choser2[response_query_choser2.find("{"):response_query_choser2.rfind("}") + 1])["questions"]
-                            # question1, question2, question3, question4 = questions
-                            # # messangerbot(question1)
 
-                            # # time.sleep(2)
-                            # messagebutton("Ayurvedic",ayurvedmessagebot+"\n \n*Either choose one of the other modes , or keep chatting on...* 😊","Ayurvedic","Yoga","Product","Exit")
-                            # # messangerbot("done")
-                            # # messagebutton_together("Ayurvedic",ayurvedmessagebot+"\n \n*Either choose one of the other modes , or keep chatting on...* 😊 \n *_Also find some suggestive questions to ask based on your conversation below:_* 😉 ","]Ayurvedic","Yoga","Product" ,"Exit", question1 , question2 , question3 , question4)
-                            # send_interactive_message( question1 , question2 , question3 , question4)
-
-                    elif currentstate==10:
-                            messangerbot("Thanks for using our Bot!",phone_no_from    )
-                            ask_to_feedback_message()
-                            currentstate=-999
-                            update_database_and_sheet(message_from_user, "Thank you Message", response_message_segregation,
-                                                    phone_no_from, profile_name,message_count,  currentstate)
                 pipeline()
 
-                # messangerbot(combined_response_doctor )
-
-                # if message_from_user:
-                #     try:
-                #         model = genai.GenerativeModel(
-                #                 model_name="gemini-1.5-flash",
-                #                 system_instruction="You are a mental health expert . Give adises in points format, dont give bullet points"
-                #             )
-                #         response = model.generate_content([message_from_user])
-                #         response_mess = response.text.strip()
-                #         print("Response from AI:", response_mess)  # Debug line
-                #     except Exception as e:
-                #         print("Error calling answer_function:", e)  # Debug line
-                #         response_mess = "Sorry, I couldn't process your request."
-                #     print(response_mess)
-                #     if response_mess:
-                #         response = messenger.send_message(
-                #             message=str(response_mess),
-                #             recipient_id="918128612391"
-                #         )
-                #     else:
-                #         print("No response generated.")
         return HttpResponse(status=200)
 
     except json.JSONDecodeError:
@@ -648,24 +606,19 @@ def chat_view(request):
 
     model = genai.GenerativeModel(
         model_name="gemini-1.5-flash",
-        system_instruction="You are a health assistant based on smartwatch data. Answer all questions with relevant information taken only from the smartwatch data."
+        system_instruction="You are a mental health expert. Give advice in points format, in 40 words with no formatting such as bold. If someone greets with hey, hello, or hi, respond accordingly without giving advice. No formatting like **."
     )
-    myfile = genai.get_file("files/h030ap0spiwx")
-    print(myfile)
-    myfile2 = genai.get_file("files/g1dtq98kn48")
-    print(myfile2)
-    myfile3 = genai.get_file("files/u4v9ederiirm")
-    print(myfile3)
-    # response = response.send_message()
-    response = model.generate_content([myfile, myfile2, "\n\n", prompt])
+    response = model.generate_content([ prompt])
 
-    # response = model.generate_content([prompt])
-    gemini_response = response.text.strip()
+    # Remove all "*" characters from the response
+    gemini_response = response.text.replace('*', '').strip()
 
+    # Save the chat response
     chat = Chat.objects.create(user_id=user.id, query=query, response=gemini_response)
 
     chat_serializer = ChatSerializer(chat)
     return Response(chat_serializer.data, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
@@ -695,17 +648,10 @@ def suggestive_question_view(request):
     # Interact with the Gemini model
     model = genai.GenerativeModel(
         model_name="gemini-1.5-flash",
-        system_instruction="You are a health assistant based on smartwatch data."
+        system_instruction="You are a mental health expert . Give adises in points format, dont give bullet points in 40 words with no formatting of bold etc."
     )
 
-    myfile = genai.get_file("files/h030ap0spiwx")
-    myfile2 = genai.get_file("files/g1dtq98kn48")
-    myfile3 = genai.get_file("files/u4v9ederiirm")
-    # response = response.send_message()
-    # response = model.generate_content(
-    # ["\n\n", prompt]
-
-    response = model.generate_content([myfile, myfile2,myfile3, prompt], generation_config=genai.GenerationConfig(response_mime_type="application/json"))
+    response = model.generate_content([prompt], generation_config=genai.GenerationConfig(response_mime_type="application/json"))
     gemini_response = response.text.strip()
 
     try:
@@ -858,7 +804,7 @@ def home(request):
     return render(request, 'home.html')
 
 @user_passes_test(is_admin_user, login_url='/admin/')
-def settings(request):
+def settings_1(request):
     return render(request, 'settings.html')
 
 USERNAME = 'EvolvingPlanet'
@@ -989,7 +935,7 @@ def upload_contacts(request):
                 phone_number = "91" + str(row['PhoneNumber']).strip()
 
                 # Check if wa_id matches the phone number in any Thread instance
-                if Thread.objects.filter(wa_id=phone_number).exists():
+                if Contact.objects.filter(phone_number=phone_number).exists():
                     messages.error(request, f'The phone number {phone_number} matches a wa_id in Threads and was not added.')
                     continue  # Skip this row and do not create a Contact
 
@@ -1126,7 +1072,7 @@ def handle_uploaded_file(file_upload, company_name):
     with open(file_path, 'wb+') as destination:
         for chunk in file_upload.chunks():
             destination.write(chunk)
-    file_path="https://evolvingplanet.pythonanywhere.com/media/"+f"{company_name}_{file_upload.name}"
+    # file_path="https://.pythonanywhere.com/media/"+f"{company_name}_{file_upload.name}"
     return file_path
 
 
@@ -1135,14 +1081,9 @@ def submit_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             file_name = form.cleaned_data['file_name']
-            # file_upload = form.cleaned_data['file_upload']
-            # file_path = f'{settings.MEDIA_ROOT}/{company_name}_{file_upload.name}'
-            # with open(file_path, 'wb+') as destination:
-            #     for chunk in file_upload.chunks():
-            #         destination.write(chunk)
-            file_path="https://evolvingplanet.pythonanywhere.com/medias/"+file_name+".csv"
+            # file_path="https://.pythonanywhere.com/medias/"+file_name+".csv"
             print(file_path)
-            api_key = 'cda4470b8ec7412545babcdde38d801a'
+            # api_key = ''
             timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             output_path = f'{settings.MEDIA_ROOT}/{file_name}_{timestamp}.pdf'
             print("reached step 1")
@@ -1228,13 +1169,12 @@ def submit_media_message(request):
         media_type = request.POST.get('mediaType')
         # media_message = request.POST.get('mediaMessage')
         # Process the form data and perform any necessary operations
-        url = 'https://graph.facebook.com/v19.0/138583586012407/messages'
-        access_token = WHATSAPP_TOKEN
+        url = f'https://graph.facebook.com/v19.0/{PHONE_NUM_ID}/messages'
         # recipient_phone_number = '918128612391'
         # media_object_id="https://akshat1423.github.io/speechyz.aac"
         # media_object_id ="https://evolvingplanet.pythonanywhere.com/media/audios/"+answered_file_name_with_timestamp
         headers = {
-            'Authorization': f'Bearer {access_token}',
+            'Authorization': f'Bearer {WHATSAPP_TOKEN}',
             'Content-Type': 'application/json'
         }
         payload = {
@@ -1262,27 +1202,6 @@ def submit_new_number_message(request):
         phone_number = request.POST.get('phoneNumberNewNumber')
         template = request.POST.get('templateMessageId')
         messenger.send_template(template, phone_number, components=[], lang="en_US")
-        # url = 'https://graph.facebook.com/v19.0/138583586012407/messages'
-               # # recipient_phone_number = '918128612391'
-        # # media_object_id="https://akshat1423.github.io/speechyz.aac"
-        # # media_object_id ="https://evolvingplanet.pythonanywhere.com/media/audios/"+answered_file_name_with_timestamp
-        # headers = {
-        #     'Authorization': f'Bearer {access_token}',
-        #     'Content-Type': 'application/json'
-        # }
-        # payload = {
-        #     "messaging_product": "whatsapp",
-        #     "recipient_type": "individual",
-        #     "to": phonenum,
-        #     "type": media_type,
-        #     media_type: {
-        #         "link": attachment
-        #     }
-        # }
-        # json_payload = json.dumps(payload)
-        # response = requests.post(url, headers=headers, data=json_payload)
-
-        # Assuming the submission was successful
         success_message = f'Template submitted successfully! to {phone_number} template {template} '
 
     return render(request, 'broadcast.html', {'success_message': success_message, 'threads': threads})
@@ -1308,4 +1227,110 @@ def queries_over_time(request):
     response = HttpResponse(content_type="image/png")
     plt.savefig(response, format="png")
     return response
+
+from pydub import AudioSegment
+import assemblyai as aai
+import google.generativeai as genai
+import os
+import requests
+
+
+genai.configure(api_key=GOOGLE_API_KEY)
+aai.settings.api_key = ASSEMBLYAI_API_KEY
+
+def transcribe_audio(file_path):
+    if not os.path.isfile(file_path):
+        return {'error': 'Audio file not found'}
+
+    base_name = os.path.splitext(file_path)[0]
+    wav_file_path = f"{base_name}.ogg"
+
+    try:
+        if file_path.endswith('.webm'):
+            audio = AudioSegment.from_file(file_path, format="webm")
+            audio.export(wav_file_path, format="ogg")
+        else:
+            wav_file_path = file_path
+
+        transcriber = aai.Transcriber()
+        transcript = transcriber.transcribe(wav_file_path)
+
+        if transcript.status == aai.TranscriptStatus.error:
+            return {'error': transcript.error}
+
+        return {'transcription': transcript.text}
+
+    except Exception as e:
+        return {'error': str(e)}
+
+def generate_text_response(input_text):
+    model = genai.GenerativeModel(
+        model_name="gemini-1.5-flash",
+        system_instruction="You are a mental health expert. Give advice in 30 words with no formatting of bold etc."
+    )
+    response = model.generate_content([input_text])
+    return response.text.strip()
+
+
+def process_audio_from_link(id,bodyy,phone_no_from): #download #transcribe #reply #texttospeech #
+    name = bodyy["entry"][0]["changes"][0]["value"]["contacts"][0]["profile"]["name"]
+    wa_id = bodyy["entry"][0]["changes"][0]["value"]["contacts"][0]["wa_id"]
+    folder_path = "/home/AkshatGoogleHackathon/wearlytics_backend/media/audios/"
+    files_in_folder = os.listdir(folder_path)
+
+    # Loop through each file and remove it
+    for file_name in files_in_folder:
+        file_path = os.path.join(folder_path, file_name)
+        try:
+            os.remove(file_path)
+            print(f"Deleted: {file_path}")
+        except Exception as e:
+            print(f"Error deleting {file_path}: {e}")
+    url = f"https://graph.facebook.com/v18.0/{id}"
+    payload = {}
+    headers = {
+        'Authorization': f'Bearer {WHATSAPP_TOKEN}'
+    }
+    response1 = requests.request("GET", url, headers=headers, data=payload)
+    response_data = response1.json()
+    audio_url = response_data["url"]
+    response = requests.get(audio_url, headers=headers)
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    file_name_with_timestamp = f"{timestamp}.ogg"
+    file_path = os.path.join(settings.MEDIA_ROOT, 'audios', file_name_with_timestamp)
+    with open(file_path, 'wb') as f:
+        f.write(response.content)
+    transcription_result = transcribe_audio(file_path)
+    if 'transcription' in transcription_result:
+        response_text = generate_text_response(transcription_result['transcription'])
+
+        format="""{
+            "questions": [
+                "How can blinking frequently help with eye strain?",
+                "What is the 20-20-20 rule for reducing eye strain?",
+                "Why is proper lighting essential to reduce eye strain?",
+                "When should you consult an eye care professional for eye strain?"
+        ]
+        }  """
+        prompt1 = f'''
+        generate similar 4 small questions(limit is of 20 char for each ques) based on these queries in list format give in a json type format {format}, give only the json no text above or below it
+        {transcription_result['transcription']}and response {response_text} ... dont give the same question! give based on the use ques and chat
+        '''
+        model = genai.GenerativeModel("gemini-1.5-pro-latest")
+        openai_response = model.generate_content(
+            prompt1,
+            generation_config=genai.GenerationConfig(
+                response_mime_type="application/json"
+            ),
+        )
+        openai_response=openai_response.text.strip()
+
+        response_query_choser2=(openai_response)
+        questions = json.loads(response_query_choser2[response_query_choser2.find("{"):response_query_choser2.rfind("}") + 1])["questions"]
+        question1, question2, question3, question4 = questions
+        messagebutton_together("Menta",response_text, question1 , question2 , question3 , question4,phone_no_from)
+
+
+
+
 

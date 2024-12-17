@@ -231,7 +231,6 @@
                 <th><input type="text" class="filter" data-column="2" placeholder="Filter User Message"></th>
                 <th><input type="text" class="filter" data-column="3" placeholder="Filter Response"></th>
                 {% comment %} <th><input type="text" class="filter" data-column="3" placeholder="Filter Product Response"></th> {% endcomment %}
-                <th><input type="text" class="filter" data-column="4" placeholder="Filter Gist"></th>
                 {% comment %} <th style="width: 80px;"><input type="text" class="filter" data-column="5" placeholder="Filter Response Type" style="width: 80px;"></th> {% endcomment %}
                 <th><input type="text" class="filter" data-column="5" placeholder="Filter Created At" style="width: 80px;"></th>
                 <th><input type="text" class="filter" data-column="6" placeholder="State" style="width: 20px;"></th>
@@ -243,7 +242,6 @@
                 <th>User Message</th>
                 <th>Response</th>
                 {% comment %} <th>Product Response</th> {% endcomment %}
-                <th>Gist</th>
                 {% comment %} <th>Response Type</th> <!-- New Column --> {% endcomment %}
                 <th>Created At</th>
                 <th>Current State</th>
@@ -258,9 +256,8 @@
                 <td style="width: 20px;">{{ message.message_internal_id  }}</td>
                 <td style="width: 20px;">{{ message.profile_name  }}</td>
                 <td class="user-message">{{ message.user_message }}</td>
-                <td>{{ message.doctor_response }}</td>
-                {% comment %} <td>{{ message.product_response }}</td> {% endcomment %}
-                <td>{{ message.gist }}</td>
+                <td>{{ message.bot_response }}</td>
+                {% comment %} <td>{{ message.bot_response }}</td> {% endcomment %}
                 {% comment %} <td>{{ message.response_message_segregation }}</td> <!-- New Column --> {% endcomment %}
                 <td>{{ message.created_at }}</td>
                 <td style="width: 20px;">{{ message.currentstate  }}</td>

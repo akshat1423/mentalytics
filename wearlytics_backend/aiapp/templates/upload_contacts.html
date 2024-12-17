@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Contacts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+                .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .form-group {
+            margin-bottom: 20px
+        }
+        .form-group label, .form-group input, .form-group textarea, .submit {
+            display: block;
+            width: 100%;
+            padding: 10px;
+        }
+        .submit {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit:hover {
+            background-color: #218838;
+        }
+
+
+    </style>
+</head>
+<body>
+    <style>
+        .header {
+            background-color: #28A745;
+            color: white;
+            padding: 20px 10px;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            flex-grow: 1;
+        }
+        .navbar {
+            display: flex;
+                           flex-wrap: wrap;
+            justify-content: center;
+            gap: 11px;
+        }
+        .navbar a {
+            background-color: #258b3c73;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 1s;
+        }
+        .navbar a:hover {
+            background-color: #218838;
+        }
+
+
+        .navbar a span {
+    display: none;
+    margin-left: 8px;
+    white-space: nowrap; /* Ensure the text does not wrap */
+}
+
+.navbar a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Adjust based on the size you want for the icons */
+    height: 40px;
+    overflow: hidden; /* Hide the text initially */
+}
+
+.navbar a:hover span {
+    display: inline; /* Show text on hover */
+}
+
+.navbar a:hover {
+    width: auto; /* Allow the link to expand to fit the text */
+    padding: 10px; /* Add some padding around the text */
+}
+    </style>
+    <div class="header">
+        <h1>🌱 Veda Contacts Management 🤖 🌿</h1>
+
+<div class="navbar">
+
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/" title="Home"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/dashboardhealthbot" title="Dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/broadcast" title="Broadcast"><i class="fas fa-broadcast-tower"></i><span>Broadcast</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/upload" title="Upload Docs"><i class="fas fa-upload"></i><span>Upload Docs</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/contacts" title="Contacts"><i class="fas fa-address-book"></i><span>Contacts</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/chatindex" title="Chats"><i class="fas fa-comments"></i><span>Chats</span></a>
+    <!--<a href="https://akshatgooglehackathon.pythonanywhere.com/upload-contacts" title="Upload Contacts"><i class="fas fa-file-upload"></i><span>Upload Contacts</span></a>-->
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/queries_over_time" title="Analytics"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/admin" title="Admin"><i class="fas fa-user-cog"></i><span>Admin</span></a>
+    <a href="https://akshatgooglehackathon.pythonanywhere.com/settings" title="Settings"><i class="fas fa-cog"></i><span>Settings</span></a>
+
+</div>
+
+</div>
+<div class="container">
+<h2>Upload Contacts CSV</h2>
+<h3>Make in this format <a href="https://docs.google.com/spreadsheets/d/1Z-NejlwC9do6eqFO2a7EI5QvJsyEZTKJag85sq95E3Y/edit?usp=sharing">Template</a></h3>
+<form method="post" enctype="multipart/form-data">
+<!-- Assuming Django's form context is passed to the template -->
+{% csrf_token %}
+<div class="form-group">
+<!-- Assuming 'form' context is passed with 'file' field -->
+{{ form.file.label_tag }}
+{{ form.file }}
+</div>
+<button type="submit" class="submit">Upload</button>
+</form>
+</div>
+
+</body>
+</html>

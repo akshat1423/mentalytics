@@ -231,11 +231,11 @@
                 <div class="timestamp" align="center">{{ message.timestamp }}</div>
                 <div class="message user-message">
                     <div class="message-header">You</div>
-                    <div class="message-body">{{ message.question }}</div>
+                    <div class="message-body">{{ message.user_message }}</div>
                 </div>
                 <div class="message bot-message">
-                    <div class="message-header">Veda</div>
-                    <div class="message-body">{{ message.answer }}</div>
+                    <div class="message-header">Menta</div>
+                    <div class="message-body">{{ message.bot_response }}</div>
                 </div>
             </div>
         {% endfor %}

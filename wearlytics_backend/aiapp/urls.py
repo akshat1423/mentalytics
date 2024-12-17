@@ -8,7 +8,7 @@ from .views import submit_text_message, submit_media_message, submit_new_number_
 from .views import upload_contacts, display_contacts
 from .views import chatindex, chat_view2,submit_text_message_chat
 from .views import home
-from .views import settings
+from .views import settings_1
 from .views import shut_down_backend, re_enable_backend, reload_backend
 
 urlpatterns = [
@@ -33,7 +33,7 @@ urlpatterns = [
     path('chat/<str:phone_number>/', chat_view2, name='chat_view'),
     path('submit_text_message_chat/', submit_text_message_chat, name='submit_text_message_chat'),
     path('', home, name='home'),
-    path('settings', settings, name='settings'),
+    path('settings', settings_1, name='settings'),
     path('shutdown-backend/', shut_down_backend, name='shutdown-backend'),
     path('re-enable-backend/', re_enable_backend, name='re-enable-backend'),
     path('reload-backend/', reload_backend, name='reload-backend'),
