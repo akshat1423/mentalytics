@@ -4,3 +4,8 @@ openai
 google-generativeai
 SpeechRecognition 
 pydub
+djangorestframework-simplejwt
+django-cors-headers
+assemblyai
+heyoo
+python-decouple
